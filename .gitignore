@@ -1,0 +1,4 @@
+*.pyc
+dist/
+build/
+django_updown.egg-info/
