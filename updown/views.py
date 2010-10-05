@@ -40,11 +40,11 @@ class AddRatingView(object):
             'score': score,
         })
 
-        had_voted = bool(field.get_rating_for_user(request.user))
-
-        context['had_voted'] = had_voted
 
         try:
+            had_voted = bool(field.get_rating_for_user(request.user))
+
+            context['had_voted'] = had_voted
             field.add(score, request.user)
         except AuthRequired:
             return self.authentication_required_response(request, context)
