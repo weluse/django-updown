@@ -142,6 +142,9 @@ class RatingManager(object):
 
     dislikes = property(_get_dislikes, _set_dislikes)
 
+    def get_difference(self):
+        return self.likes - self.dislikes
+
 class RatingCreator(object):
     def __init__(self, field):
         self.field = field
