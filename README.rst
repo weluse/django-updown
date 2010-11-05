@@ -37,6 +37,16 @@ Now you can write your own view to submit ratings or use the predefinded::
 To submit a vote just go to ``video/<id>/rate/(1|-1)``. If you allowed users to
 change they're vote, they can do it with the same url.
 
+----------------
+Troubleshooting
+----------------
+If you previously used this app you may get to a point where migrations are
+failing.
+Try::
+    ./manage.py migrate updown --fake 0001
+to skip the initial migration. After this apply the migrations again::
+    ./manage.py migrate updown
+
 ------
 Thanks
 ------

@@ -27,7 +27,8 @@ class Vote(models.Model):
     object_id = models.PositiveIntegerField()
     key = models.CharField(max_length=32)
     score = models.SmallIntegerField(choices=_SCORE_TYPE_CHOICES)
-    user = models.ForeignKey(User, related_name="votes")
+    user = models.ForeignKey(User, blank=True, null=True, related_name="votes")
+    ip_address = models.IPAddressField()
     date_added = models.DateTimeField(default=datetime.datetime.now, editable=False)
     date_changed = models.DateTimeField(default=datetime.datetime.now, editable=False)
 
@@ -43,3 +44,11 @@ class Vote(models.Model):
     def save(self, *args, **kwargs):
         self.date_changed = datetime.datetime.now()
         super(Vote, self).save(*args, **kwargs)
+
+    def partial_ip_address(self):
+        ip = self.ip_address.split('.')
+        ip[-1] = 'xxx'
+        return '.'.join(ip)
+
+    partial_ip_address = property(partial_ip_address)
+

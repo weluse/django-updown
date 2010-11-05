@@ -21,7 +21,7 @@ if 'django.contrib.contenttypes' not in settings.INSTALLED_APPS:
 
 from django.contrib.contenttypes.models import ContentType
 
-__all__ = ('Rating', 'RatingField',)
+__all__ = ('Rating', 'RatingField', 'AnonymousRatingField')
 
 try:
     from hashlib import md5
@@ -46,7 +46,7 @@ class RatingManager(object):
         self.like_field_name = "%s_likes" % (self.field.name,)
         self.dislike_field_name = "%s_dislikes" % (self.field.name,)
 
-    def get_rating_for_user(self, user):
+    def get_rating_for_user(self, user, ip_address=None):
         kwargs = dict(
             content_type = self.get_content_type(),
             object_id = self.instance.pk,
@@ -54,9 +54,13 @@ class RatingManager(object):
         )
 
         if not (user and user.is_authenticated()):
-            raise AuthRequired("User must be a user, not '%r'" % (user,))
-
-        kwargs['user'] = user
+            if not ip_address:
+                raise ValueError("``user`` or ``ip_address`` must be "
+                                 "present.")
+            kwargs['user__isnull'] = True
+            kwargs['ip_address'] = ip_address
+        else:
+            kwargs['user'] = user
 
         try:
             rating = Vote.objects.get(**kwargs)
@@ -70,7 +74,7 @@ class RatingManager(object):
             self.content_type = ContentType.objects.get_for_model(self.instance)
         return self.content_type
 
-    def add(self, score, user, commit=True):
+    def add(self, score, user, ip_address, commit=True):
         try:
             score = int(score)
         except (ValueError, TypeError):
@@ -79,11 +83,16 @@ class RatingManager(object):
         if score not in SCORE_TYPES.values():
             raise InvalidRating("%s is not a valid score" % (score,))
 
-        if user is None or not user.is_authenticated():
+        is_anonymous = (user is None or not user.is_authenticated())
+        if is_anonymous and not self.field.allow_anonymous:
             raise AuthRequired("User must be a user, not '%r'" % (user,))
 
+        if is_anonymous:
+            user = None
+
         defaults = dict(
-            score = score
+            score = score,
+            ip_address = ip_address,
         )
 
         kwargs = dict(
@@ -92,6 +101,8 @@ class RatingManager(object):
             key             = self.field.key,
             user            = user,
         )
+        if not user:
+            kwargs['ip_address'] = ip_address
 
         try:
             rating, created = Vote.objects.get(**kwargs), False
@@ -145,6 +156,9 @@ class RatingManager(object):
     def get_difference(self):
         return self.likes - self.dislikes
 
+    def get_quotient(self):
+        return self.likes / max(self.dislikes, 1)
+
 class RatingCreator(object):
     def __init__(self, field):
         self.field = field
@@ -166,6 +180,7 @@ class RatingCreator(object):
 class RatingField(IntegerField):
     def __init__(self, delimiter="|", *args, **kwargs):
         self.can_change_vote = kwargs.pop('can_change_vote', False)
+        self.allow_anonymous = kwargs.pop('allow_anonymous', False)
         self.delimiter = delimiter
         kwargs['editable'] = False
         kwargs['default'] = 0
@@ -208,6 +223,13 @@ class RatingField(IntegerField):
         defaults = {'form_class': forms.RatingField}
         defaults.update(kwargs)
         return super(RatingField, self).formfield(**defaults)
+
+
+class AnonymousRatingField(RatingField):
+    def __init__(self, *args, **kwargs):
+        kwargs['allow_anonymous'] = True
+        super(AnonymousRatingField, self).__init__(*args, **kwargs)
+
 
 from south.modelsinspector import add_introspection_rules
 add_introspection_rules([

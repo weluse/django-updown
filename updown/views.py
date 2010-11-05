@@ -42,10 +42,11 @@ class AddRatingView(object):
 
 
         try:
-            had_voted = bool(field.get_rating_for_user(request.user))
+            had_voted = bool(field.get_rating_for_user(request.user,
+                                                       request.META['REMOTE_ADDR']))
 
             context['had_voted'] = had_voted
-            field.add(score, request.user)
+            field.add(score, request.user, request.META['REMOTE_ADDR'])
         except AuthRequired:
             return self.authentication_required_response(request, context)
         except InvalidRating:
