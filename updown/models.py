@@ -35,7 +35,8 @@ class Vote(models.Model):
     content_object = generic.GenericForeignKey()
 
     class Meta:
-        unique_together = (('content_type', 'object_id', 'key', 'user'))
+        unique_together = (('content_type', 'object_id', 'key', 'user',
+                            'ip_address'))
 
     def __unicode__(self):
         return u"%s voted %s on %s" % (self.user, self.score,
