@@ -214,10 +214,11 @@ class RatingField(IntegerField):
     def get_prep_value(self, value):
         return self.delimiter.join(value)
 
-    def get_db_prep_save(self, value):
+    def get_db_prep_save(self, value, connection):
         pass
 
-    def get_db_prep_lookup(self, lookup_type, value):
+    def get_db_prep_lookup(self, lookup_type, value, connection,
+                           prepared=False):
         raise NotImplementedError(self.get_db_prep_lookup)
 
     def formfield(self, **kwargs):
