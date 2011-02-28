@@ -5,7 +5,8 @@ updown.models
 
 The vote model for storing ratings
 
-:copyright: 2010, Daniel Banck <dbanck@weluse.de
+:copyright: 2011, weluse (http://weluse.de)
+:author: 2011, Daniel Banck <dbanck@weluse.de>
 :license: BSD, see LICENSE for more details.
 """
 from django.db import models
