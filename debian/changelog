@@ -1,0 +1,5 @@
+python-django-updown (0.1.2-1) unstable; urgency=low
+
+  * Initial Debian package
+
+ -- Pascal Hartig <phartig@weluse.de>  Fri, 18 Mar 2011 19:33:57 +0100
