@@ -14,11 +14,12 @@ from django.conf import settings
 
 from updown.models import Vote, SCORE_TYPES
 from updown.exceptions import InvalidRating, AuthRequired, CannotChangeVote
-import updown.forms
+from updown import forms
 
 
 if 'django.contrib.contenttypes' not in settings.INSTALLED_APPS:
-    raise ImportError("django-updown requires django.contrib.contenttypes in your INSTALLED_APPS")
+    raise ImportError("django-updown requires django.contrib.contenttypes "
+                      "in your INSTALLED_APPS")
 
 from django.contrib.contenttypes.models import ContentType
 
@@ -29,6 +30,7 @@ try:
 except ImportError:
     from md5 import new as md5
 
+
 def md5_hexdigest(value):
     return md5(value).hexdigest()
 
@@ -37,6 +39,7 @@ class Rating(object):
     def __init__(self, likes, dislikes):
         self.likes = likes
         self.dislikes = dislikes
+
 
 class RatingManager(object):
     def __init__(self, instance, field):
@@ -48,11 +51,11 @@ class RatingManager(object):
         self.dislike_field_name = "%s_dislikes" % (self.field.name,)
 
     def get_rating_for_user(self, user, ip_address=None):
-        kwargs = dict(
-            content_type = self.get_content_type(),
-            object_id = self.instance.pk,
-            key = self.field.key
-        )
+        kwargs = {
+            'content_type': self.get_content_type(),
+            'object_id': self.instance.pk,
+            'key': self.field.key
+        }
 
         if not (user and user.is_authenticated()):
             if not ip_address:
@@ -72,14 +75,16 @@ class RatingManager(object):
 
     def get_content_type(self):
         if self.content_type is None:
-            self.content_type = ContentType.objects.get_for_model(self.instance)
+            self.content_type = ContentType.objects.get_for_model(
+                self.instance)
         return self.content_type
 
     def add(self, score, user, ip_address, commit=True):
         try:
             score = int(score)
         except (ValueError, TypeError):
-            raise InvalidRating("%s is not a valid score for %s" % (score, self.field.name))
+            raise InvalidRating("%s is not a valid score for %s" % (
+                score, self.field.name))
 
         if score not in SCORE_TYPES.values():
             raise InvalidRating("%s is not a valid score" % (score,))
@@ -91,17 +96,17 @@ class RatingManager(object):
         if is_anonymous:
             user = None
 
-        defaults = dict(
-            score = score,
-            ip_address = ip_address,
-        )
+        defaults = {
+            'score': score,
+            'ip_address': ip_address
+        }
 
-        kwargs = dict(
-            content_type    = self.get_content_type(),
-            object_id       = self.instance.pk,
-            key             = self.field.key,
-            user            = user,
-        )
+        kwargs = {
+            'content_type': self.get_content_type(),
+            'object_id': self.instance.pk,
+            'key': self.field.key,
+            'user': user
+        }
         if not user:
             kwargs['ip_address'] = ip_address
 
@@ -160,6 +165,7 @@ class RatingManager(object):
     def get_quotient(self):
         return self.likes / max(self.dislikes, 1)
 
+
 class RatingCreator(object):
     def __init__(self, field):
         self.field = field
@@ -176,7 +182,9 @@ class RatingCreator(object):
             setattr(instance, self.like_field_name, value.likes)
             setattr(instance, self.dislike_field_name, value.dislikes)
         else:
-            raise TypeError("%s value must be a Rating instance, not '%r'" % (self.field.name, value))
+            raise TypeError("%s value must be a Rating instance, not '%r'" % (
+                self.field.name, value))
+
 
 class RatingField(IntegerField):
     def __init__(self, delimiter="|", *args, **kwargs):
@@ -190,9 +198,11 @@ class RatingField(IntegerField):
 
     def contribute_to_class(self, cls, name):
         self.name = name
-        self.like_field = PositiveIntegerField(editable=False, default=0, blank=True)
+        self.like_field = PositiveIntegerField(editable=False, default=0,
+                                               blank=True)
         cls.add_to_class("%s_likes" % (self.name,), self.like_field)
-        self.dislike_field = PositiveIntegerField(editable=False, default=0, blank=True)
+        self.dislike_field = PositiveIntegerField(editable=False, default=0,
+                                                  blank=True)
         cls.add_to_class("%s_dislikes" % (self.name,), self.dislike_field)
         self.key = md5_hexdigest(self.name)
 
@@ -236,9 +246,9 @@ class AnonymousRatingField(RatingField):
 from south.modelsinspector import add_introspection_rules
 add_introspection_rules([
     (
-        [RatingField], # Class(es) these apply to
-        [],         # Positional arguments (not used)
-        {           # Keyword argument
+        [RatingField],  # Class(es) these apply to
+        [],             # Positional arguments (not used)
+        {               # Keyword argument
             "delimiter": ["delimiter", {"default": "|"}],
         },
     ),
