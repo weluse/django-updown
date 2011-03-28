@@ -163,7 +163,7 @@ class RatingManager(object):
         return self.likes - self.dislikes
 
     def get_quotient(self):
-        return self.likes / max(self.dislikes, 1)
+        return float(self.likes) / max(self.dislikes, 1)
 
 
 class RatingCreator(object):
