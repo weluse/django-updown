@@ -98,7 +98,7 @@ class AddRatingView(object):
 
 
 class AddRatingFromModel(AddRatingView):
-    def __call__(self, request, model, app_label, object_id, field_name, score):
+    def __call__(self, request, model, app_label, object_id, field_name, score, **kwargs):
         """__call__(request, model, app_label, object_id, field_name, score)
 
         Adds a vote to the specified model field."""

@@ -38,5 +38,11 @@ setup(
         'Programming Language :: Python',
         'Framework :: Django',
     ],
-    test_suite='runtests.runtests'
+    test_suite='runtests.runtests',
+    dependency_links=[
+        'http://pypi.python.org/pypi/South/',
+    ],
+    install_requires=[
+        'South',
+    ],
 )
