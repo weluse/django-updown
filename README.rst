@@ -4,6 +4,14 @@ django-updown
 
 ``django-updown`` is a simple Django application for adding youtube like up and down voting.
 
+---------
+Changelog
+---------
+
+**0.2**:
+- Updated related_name to avoid namespace clashes.
+- Added south as dependency
+
 -----
 Usage
 -----
@@ -44,6 +52,7 @@ If you previously used this app you may get to a point where migrations are
 failing.
 Try::
     ./manage.py migrate updown --fake 0001
+
 to skip the initial migration. After this apply the migrations again::
     ./manage.py migrate updown
 
