@@ -41,18 +41,19 @@ class TestRatingModel(TestCase):
 
     def test_basic_vote(self):
         """Test a simple vote"""
-        self.instance.rating.add(score=SCORE_TYPES['LIKE'], user=self.user)
+        self.instance.rating.add(SCORE_TYPES['LIKE'], self.user, '192.168.0.1')
 
         self.assertEquals(self.instance.rating_likes, 1)
 
     def test_change_vote(self):
-        self.instance.rating.add(score=SCORE_TYPES['LIKE'], user=self.user)
-        self.instance.rating.add(score=SCORE_TYPES['DISLIKE'], user=self.user)
+        self.instance.rating.add(SCORE_TYPES['LIKE'], self.user, '192.168.0.1')
+        self.instance.rating.add(SCORE_TYPES['DISLIKE'], self.user,
+                '192.168.0.1')
 
         self.assertEquals(self.instance.rating_likes, 0)
         self.assertEquals(self.instance.rating_dislikes, 1)
 
     def test_change_vote_disallowed(self):
-        self.instance.rating2.add(score=SCORE_TYPES['LIKE'], user=self.user)
+        self.instance.rating2.add(SCORE_TYPES['LIKE'], self.user, '192.168.0.1')
         self.assertRaises(CannotChangeVote, self.instance.rating2.add,
-                          score=SCORE_TYPES['DISLIKE'], user=self.user)
+                          SCORE_TYPES['DISLIKE'], self.user, '192.168.0.1')
