@@ -243,13 +243,17 @@ class AnonymousRatingField(RatingField):
         super(AnonymousRatingField, self).__init__(*args, **kwargs)
 
 
-from south.modelsinspector import add_introspection_rules
-add_introspection_rules([
-    (
-        [RatingField],  # Class(es) these apply to
-        [],             # Positional arguments (not used)
-        {               # Keyword argument
-            "delimiter": ["delimiter", {"default": "|"}],
-        },
-    ),
-], ["^updown\.fields\.RatingField"])
+try:
+    from south.modelsinspector import add_introspection_rules
+except ImportError:
+    pass
+else:
+    add_introspection_rules([
+        (
+            [RatingField],  # Class(es) these apply to
+            [],             # Positional arguments (not used)
+            {               # Keyword argument
+                "delimiter": ["delimiter", {"default": "|"}],
+            },
+        ),
+    ], ["^updown\.fields\.RatingField"])
