@@ -2,6 +2,11 @@
 django-updown
 =============
 
+.. image::
+https://secure.travis-ci.org/weluse/django-updown.png?branch=master
+    :alt: Travis CI build status
+    :target: http://travis-ci.org/weluse/django-updown
+
 ``django-updown`` is a simple Django application for adding youtube like up and down voting.
 
 ---------
