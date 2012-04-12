@@ -2,8 +2,7 @@
 django-updown
 =============
 
-.. image::
-https://secure.travis-ci.org/weluse/django-updown.png?branch=master
+.. image:: https://secure.travis-ci.org/weluse/django-updown.png?branch=master
     :alt: Travis CI build status
     :target: http://travis-ci.org/weluse/django-updown
 
