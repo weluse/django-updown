@@ -102,7 +102,7 @@ class AddRatingFromModel(AddRatingView):
 
         Adds a vote to the specified model field."""
         try:
-            content_type = ContentType.objects.get(model=model, app_label=app_label)
+            content_type = ContentType.objects.get(model=model.lower(), app_label=app_label)
         except ContentType.DoesNotExist:
             raise Http404('Invalid `model` or `app_label`.')
 
