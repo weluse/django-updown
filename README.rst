@@ -16,18 +16,20 @@ Changelog
 -----
 Usage
 -----
-Add ``"updown"`` to your ``INSTALLED_APPS`` then just add a ``RatingField`` to your model and go::
+Add ``"updown"`` to your ``INSTALLED_APPS`` then just add a ``RatingField`` to
+your existing model and go::
 
     from django.db import models
     from updown.fields import RatingField
 
-
     class Video(models.Model):
+        # ...other fields...
         rating = RatingField()
 
 You can also allow the user to change his vote::
 
     class Video(models.Model):
+        # ...other fields...
         rating = RatingField(can_change_vote=True)
 
 Now you can write your own view to submit ratings or use the predefinded::
