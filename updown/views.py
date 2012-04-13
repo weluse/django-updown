@@ -14,7 +14,6 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponse, Http404
 
 from updown.exceptions import *
-from django.conf import settings
 
 
 class AddRatingView(object):
@@ -103,7 +102,7 @@ class AddRatingFromModel(AddRatingView):
 
         Adds a vote to the specified model field."""
         try:
-            content_type = ContentType.objects.get(model=model, app_label=app_label)
+            content_type = ContentType.objects.get(model=model.lower(), app_label=app_label)
         except ContentType.DoesNotExist:
             raise Http404('Invalid `model` or `app_label`.')
 
