@@ -12,6 +12,11 @@ django-updown
 Changelog
 ---------
 
+**0.3**:
+
+- Removed south as dependency
+- Small cleanups (thanks to `gwrtheyrn <https://github.com/gwrtheyrn>`_)
+
 **0.2**:
 
 - Updated related_name to avoid namespace clashes.
