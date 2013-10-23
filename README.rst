@@ -12,6 +12,11 @@ django-updown
 Changelog
 ---------
 
+**0.4**:
+
+- Usage of ``AUTH_USER_MODEL`` instead of ``auth.models.User``
+  (thanks to `timbutler <https://github.com/timbutler>`_)
+
 **0.3**:
 
 - Removed south as dependency
@@ -55,6 +60,9 @@ Now you can write your own view to submit ratings or use the predefinded::
 
 To submit a vote just go to ``video/<id>/rate/(1|-1)``. If you allowed users to
 change they're vote, they can do it with the same url.
+
+If you're using Django version prior to 1.5, you have to add
+``AUTH_USER_MODEL = 'auth.User'`` to your settings.
 
 ----------------
 Troubleshooting
