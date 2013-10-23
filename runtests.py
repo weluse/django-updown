@@ -12,7 +12,9 @@ if not settings.configured:
             'django.contrib.auth',
             'django.contrib.contenttypes',
             'updown',
-        ]
+        ],
+        # Fix for Django versions < 1.5
+        AUTH_USER_MODEL='auth.User'
     )
 
 from django.test.simple import run_tests

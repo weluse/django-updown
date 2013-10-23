@@ -13,6 +13,7 @@ from django.db import models
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes import generic
 from django.contrib.auth.models import User
+from django.conf import settings
 
 import datetime
 
@@ -28,7 +29,7 @@ class Vote(models.Model):
     object_id = models.PositiveIntegerField()
     key = models.CharField(max_length=32)
     score = models.SmallIntegerField(choices=_SCORE_TYPE_CHOICES)
-    user = models.ForeignKey(User, blank=True, null=True, related_name="updown_votes")
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, blank=True, null=True, related_name="updown_votes")
     ip_address = models.IPAddressField()
     date_added = models.DateTimeField(default=datetime.datetime.now, editable=False)
     date_changed = models.DateTimeField(default=datetime.datetime.now, editable=False)
