@@ -11,7 +11,7 @@ Vcs-Git: https://github.com/weluse/django-updown.git
 Package: python-django-updown
 Section: python
 Architecture: all
-Depends: ${misc:Depends}, ${python:Depends}, python-django (>= 1.2)
+Depends: ${misc:Depends}, ${python:Depends}, python-django (>= 1.4)
 Description: Simple youtube-like up and down rating app for Django.
  django-updown is a simple Django application for adding youtube like up and
  down voting.
