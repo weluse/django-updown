@@ -12,6 +12,12 @@ django-updown
 Changelog
 ---------
 
+**0.5**:
+
+- Fixed DateTimeField RuntimeWarning (thanks to `yurtaev
+  <https://github.com/yurtaev>`_)
+- Tests are using Django 1.4.10 now
+
 **0.4**:
 
 - Usage of ``AUTH_USER_MODEL`` instead of ``auth.models.User``
