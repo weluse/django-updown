@@ -5,16 +5,20 @@ updown.exceptions
 
 Some custom exceptions
 
-:copyright: 2011, weluse (http://weluse.de)
-:author: 2011, Daniel Banck <dbanck@weluse.de>
+:copyright: 2016, weluse (https://weluse.de)
+:author: 2016, Daniel Banck <dbanck@weluse.de>
 :license: BSD, see LICENSE for more details.
 """
+from __future__ import unicode_literals
+
 
 class InvalidRating(ValueError):
     pass
 
-class AuthRequired(TypeError): 
+
+class AuthRequired(TypeError):
     pass
 
-class CannotChangeVote(Exception): 
+
+class CannotChangeVote(Exception):
     pass

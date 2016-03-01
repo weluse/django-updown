@@ -5,15 +5,16 @@ updown.views
 
 Basic views for voting
 
-:copyright: 2011, weluse (http://weluse.de)
-:author: 2011, Daniel Banck <dbanck@weluse.de>
+:copyright: 2016, weluse (https://weluse.de)
+:author: 2016, Daniel Banck <dbanck@weluse.de>
 :license: BSD, see LICENSE for more details.
 """
+from __future__ import unicode_literals
 from django.contrib.contenttypes.models import ContentType
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponse, Http404
 
-from updown.exceptions import *
+from updown.exceptions import InvalidRating, AuthRequired, CannotChangeVote
 
 
 class AddRatingView(object):
@@ -40,10 +41,9 @@ class AddRatingView(object):
             'score': score,
         })
 
-
         try:
-            had_voted = bool(field.get_rating_for_user(request.user,
-                                                       request.META['REMOTE_ADDR']))
+            had_voted = bool(field.get_rating_for_user(
+                request.user, request.META['REMOTE_ADDR']))
 
             context['had_voted'] = had_voted
             field.add(score, request.user, request.META['REMOTE_ADDR'])
@@ -97,15 +97,16 @@ class AddRatingView(object):
 
 
 class AddRatingFromModel(AddRatingView):
-    def __call__(self, request, model, app_label, object_id, field_name, score, **kwargs):
+    def __call__(self, request, model, app_label, object_id, field_name,
+                 score, **kwargs):
         """__call__(request, model, app_label, object_id, field_name, score)
 
         Adds a vote to the specified model field."""
         try:
-            content_type = ContentType.objects.get(model=model.lower(), app_label=app_label)
+            content_type = ContentType.objects.get(model=model.lower(),
+                                                   app_label=app_label)
         except ContentType.DoesNotExist:
             raise Http404('Invalid `model` or `app_label`.')
 
-        return super(AddRatingFromModel, self).__call__(request, content_type.id,
-                                                        object_id, field_name, score)
-
+        return super(AddRatingFromModel, self).__call__(
+            request, content_type.id, object_id, field_name, score)

@@ -5,10 +5,11 @@ updown.fields
 
 Fields needed for the updown ratings
 
-:copyright: 2011, weluse (http://weluse.de)
-:author: 2011, Daniel Banck <dbanck@weluse.de>
+:copyright: 2016, weluse (https://weluse.de)
+:author: 2016, Daniel Banck <dbanck@weluse.de>
 :license: BSD, see LICENSE for more details.
 """
+from __future__ import unicode_literals
 from django.db.models import IntegerField, PositiveIntegerField
 from django.conf import settings
 
@@ -32,7 +33,7 @@ except ImportError:
 
 
 def md5_hexdigest(value):
-    return md5(value).hexdigest()
+    return md5(value.encode()).hexdigest()
 
 
 class Rating(object):
@@ -47,8 +48,8 @@ class RatingManager(object):
         self.instance = instance
         self.field = field
 
-        self.like_field_name = "%s_likes" % (self.field.name,)
-        self.dislike_field_name = "%s_dislikes" % (self.field.name,)
+        self.like_field_name = "{}_likes".format(self.field.name,)
+        self.dislike_field_name = "{}_dislikes".format(self.field.name,)
 
     def get_rating_for_user(self, user, ip_address=None):
         kwargs = {
@@ -83,15 +84,15 @@ class RatingManager(object):
         try:
             score = int(score)
         except (ValueError, TypeError):
-            raise InvalidRating("%s is not a valid score for %s" % (
+            raise InvalidRating("{} is not a valid score for {}".format(
                 score, self.field.name))
 
         if score not in SCORE_TYPES.values():
-            raise InvalidRating("%s is not a valid score" % (score,))
+            raise InvalidRating("{} is not a valid score".format(score))
 
         is_anonymous = (user is None or not user.is_authenticated())
         if is_anonymous and not self.field.allow_anonymous:
-            raise AuthRequired("User must be a user, not '%r'" % (user,))
+            raise AuthRequired("User must be a user, not '{}'".format(user))
 
         if is_anonymous:
             user = None
@@ -169,8 +170,8 @@ class RatingManager(object):
 class RatingCreator(object):
     def __init__(self, field):
         self.field = field
-        self.like_field_name = "%s_likes" % (self.field.name,)
-        self.dislike_field_name = "%s_dislikes" % (self.field.name,)
+        self.like_field_name = "{}_likes".format(self.field.name)
+        self.dislike_field_name = "{}_dislikes".format(self.field.name)
 
     def __get__(self, instance, type=None):
         if instance is None:
@@ -182,7 +183,7 @@ class RatingCreator(object):
             setattr(instance, self.like_field_name, value.likes)
             setattr(instance, self.dislike_field_name, value.dislikes)
         else:
-            raise TypeError("%s value must be a Rating instance, not '%r'" % (
+            raise TypeError("{} value must be a Rating instance, not '{}'".format(
                 self.field.name, value))
 
 
@@ -200,10 +201,10 @@ class RatingField(IntegerField):
         self.name = name
         self.like_field = PositiveIntegerField(editable=False, default=0,
                                                blank=True)
-        cls.add_to_class("%s_likes" % (self.name,), self.like_field)
+        cls.add_to_class("{}_likes".format(self.name), self.like_field)
         self.dislike_field = PositiveIntegerField(editable=False, default=0,
                                                   blank=True)
-        cls.add_to_class("%s_dislikes" % (self.name,), self.dislike_field)
+        cls.add_to_class("{}_dislikes".format(self.name), self.dislike_field)
         self.key = md5_hexdigest(self.name)
 
         field = RatingCreator(self)
