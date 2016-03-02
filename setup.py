@@ -1,22 +1,8 @@
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
-"""
-djang-updown
-~~~~~~~~~~~~
-
-A django application which provides simple like and dislike voting
-
-:copyright: 2016, weluse (https://weluse.de)
-:author: 2016, Daniel Banck <dbanck@weluse.de>
-:license: BSD, see LICENSE for more details.
-"""
 import os
 import re
 from setuptools import setup, find_packages
-
-
-f = open(os.path.join(os.path.dirname(__file__), 'README.rst'))
-readme = f.read()
-f.close()
 
 
 def get_version(package):
@@ -33,9 +19,8 @@ version = get_version('updown')
 setup(
     name='django-updown',
     version=version,
-    description='django-updown is a reusable Django application for youtube \
+    description='Reusable Django application for youtube \
     like up and down voting.',
-    long_description=readme,
     author='Daniel Banck',
     author_email='dbanck@weluse.de',
     url='http://github.com/weluse/django-updown/tree/master',
