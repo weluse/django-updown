@@ -1,15 +1,8 @@
-# -*- coding: utf-8 -*-
 """
-updown.views
-~~~~~~~~~~~~
-
 Basic views for voting
-
-:copyright: 2016, weluse (https://weluse.de)
-:author: 2016, Daniel Banck <dbanck@weluse.de>
-:license: BSD, see LICENSE for more details.
 """
 from __future__ import unicode_literals
+
 from django.contrib.contenttypes.models import ContentType
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponse, Http404

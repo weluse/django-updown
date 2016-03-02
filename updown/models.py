@@ -1,15 +1,8 @@
-# -*- coding: utf-8 -*-
 """
-updown.models
-~~~~~~~~~~~~~
-
 The vote model for storing ratings
-
-:copyright: 2016, weluse (https://weluse.de)
-:author: 2016, Daniel Banck <dbanck@weluse.de>
-:license: BSD, see LICENSE for more details.
 """
 from __future__ import unicode_literals
+
 from django.db import models
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes.fields import GenericForeignKey

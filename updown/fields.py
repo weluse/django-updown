@@ -1,15 +1,8 @@
-# -*- coding: utf-8 -*-
 """
-updown.fields
-~~~~~~~~~~~~~
-
 Fields needed for the updown ratings
-
-:copyright: 2016, weluse (https://weluse.de)
-:author: 2016, Daniel Banck <dbanck@weluse.de>
-:license: BSD, see LICENSE for more details.
 """
 from __future__ import unicode_literals
+
 from django.db.models import IntegerField, PositiveIntegerField
 from django.conf import settings
 
@@ -183,8 +176,8 @@ class RatingCreator(object):
             setattr(instance, self.like_field_name, value.likes)
             setattr(instance, self.dislike_field_name, value.dislikes)
         else:
-            raise TypeError("{} value must be a Rating instance, not '{}'".format(
-                self.field.name, value))
+            raise TypeError("{} value must be a Rating instance, not '{}'".
+                            format(self.field.name, value))
 
 
 class RatingField(IntegerField):
