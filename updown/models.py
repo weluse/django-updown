@@ -24,7 +24,7 @@ class Vote(models.Model):
     score = models.SmallIntegerField(choices=_SCORE_TYPE_CHOICES)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, blank=True, null=True,
                              related_name="updown_votes")
-    ip_address = models.IPAddressField()
+    ip_address = models.GenericIPAddressField()
     date_added = models.DateTimeField(default=timezone.now, editable=False)
     date_changed = models.DateTimeField(default=timezone.now, editable=False)
 
