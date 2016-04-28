@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.1
+
+- Fixed IPAddressField error (thanks to [agusmakmun](https://github.com/agusmakmun))
+
 ## 1.0.0
 
 - Dropped support for Python 2.6
@@ -13,7 +17,7 @@
 
 ## 0.5:
 
-- Fixed DateTimeField RuntimeWarning (thanks to [yurtaev](https://github.com/yurtaev>))
+- Fixed DateTimeField RuntimeWarning (thanks to [yurtaev](https://github.com/yurtaev))
 - Tests are using Django 1.4.10 now
 
 ## 0.4:
