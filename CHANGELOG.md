@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.2
+
+- Replaced IPAddressField in migration (thanks to [baster33](https://github.com/baster33))
+
 ## 1.0.1
 
 - Fixed IPAddressField error (thanks to [agusmakmun](https://github.com/agusmakmun))
