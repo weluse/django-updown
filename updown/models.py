@@ -18,12 +18,13 @@ SCORE_TYPES = dict((value, key) for key, value in _SCORE_TYPE_CHOICES)
 
 
 class Vote(models.Model):
-    content_type = models.ForeignKey(ContentType, related_name="updown_votes")
+    content_type = models.ForeignKey(ContentType, related_name="updown_votes", 
+                                     on_delete=models.CASCADE)
     object_id = models.PositiveIntegerField()
     key = models.CharField(max_length=32)
     score = models.SmallIntegerField(choices=_SCORE_TYPE_CHOICES)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, blank=True, null=True,
-                             related_name="updown_votes")
+                             related_name="updown_votes", on_delete=models.CASCADE)
     ip_address = models.GenericIPAddressField()
     date_added = models.DateTimeField(default=timezone.now, editable=False)
     date_changed = models.DateTimeField(default=timezone.now, editable=False)
