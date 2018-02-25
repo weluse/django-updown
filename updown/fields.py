@@ -44,6 +44,12 @@ class RatingManager(object):
         self.like_field_name = "{}_likes".format(self.field.name,)
         self.dislike_field_name = "{}_dislikes".format(self.field.name,)
 
+    def is_authenticated(self, user):
+        """ different method between django 1.* and 2.* """
+        if callable(user.is_authenticated):
+            return user.is_authenticated()
+        return user.is_authenticated
+
     def get_rating_for_user(self, user, ip_address=None):
         kwargs = {
             'content_type': self.get_content_type(),
@@ -51,7 +57,7 @@ class RatingManager(object):
             'key': self.field.key
         }
 
-        if not (user and user.is_authenticated()):
+        if not (user and self.is_authenticated(user)):
             if not ip_address:
                 raise ValueError("``user`` or ``ip_address`` must be "
                                  "present.")
@@ -83,7 +89,7 @@ class RatingManager(object):
         if score not in SCORE_TYPES.values():
             raise InvalidRating("{} is not a valid score".format(score))
 
-        is_anonymous = (user is None or not user.is_authenticated())
+        is_anonymous = (user is None or not self.is_authenticated(user))
         if is_anonymous and not self.field.allow_anonymous:
             raise AuthRequired("User must be a user, not '{}'".format(user))
 
