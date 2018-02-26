@@ -6,6 +6,7 @@ from __future__ import unicode_literals
 from django.db import models
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes.fields import GenericForeignKey
+from django.utils.encoding import python_2_unicode_compatible
 from django.conf import settings
 from django.utils import timezone
 
@@ -17,6 +18,7 @@ _SCORE_TYPE_CHOICES = (
 SCORE_TYPES = dict((value, key) for key, value in _SCORE_TYPE_CHOICES)
 
 
+@python_2_unicode_compatible
 class Vote(models.Model):
     content_type = models.ForeignKey(ContentType, related_name="updown_votes", 
                                      on_delete=models.CASCADE)
@@ -35,7 +37,7 @@ class Vote(models.Model):
         unique_together = (('content_type', 'object_id', 'key', 'user',
                             'ip_address'))
 
-    def __unicode__(self):
+    def __str__(self):
         return u"%s voted %s on %s" % (self.user, self.score,
                                        self.content_object)
 
