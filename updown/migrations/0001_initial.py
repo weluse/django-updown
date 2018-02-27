@@ -24,8 +24,8 @@ class Migration(migrations.Migration):
                 ('ip_address', models.GenericIPAddressField()),
                 ('date_added', models.DateTimeField(default=django.utils.timezone.now, editable=False)),
                 ('date_changed', models.DateTimeField(default=django.utils.timezone.now, editable=False)),
-                ('content_type', models.ForeignKey(related_name='updown_votes', to='contenttypes.ContentType')),
-                ('user', models.ForeignKey(related_name='updown_votes', blank=True, to=settings.AUTH_USER_MODEL, null=True)),
+                ('content_type', models.ForeignKey(related_name='updown_votes', to='contenttypes.ContentType', on_delete=models.CASCADE)),
+                ('user', models.ForeignKey(related_name='updown_votes', blank=True, to=settings.AUTH_USER_MODEL, null=True, on_delete=models.CASCADE)),
             ],
             options={
             },
