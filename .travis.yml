@@ -1,28 +1,30 @@
 language: python
+cache: pip
 
 python:
-  - "3.5"
+    - "2.7"
+    - "3.4"
+    - "3.5"
 
 sudo: false
 
 env:
-    - TOX_ENV=py35-django110
-    - TOX_ENV=py34-django110
-    - TOX_ENV=py27-django110
-    - TOX_ENV=py36-django111
-    - TOX_ENV=py35-django111
-    - TOX_ENV=py34-django111
-    - TOX_ENV=py27-django111
-    - TOX_ENV=py36-django20
-    - TOX_ENV=py35-django20
-    - TOX_ENV=py34-django20
+    - DJANGO=1.10
+    - DJANGO=1.11
+    - DJANGO=2.0
 
 matrix:
-  fast_finish: true
+    fast_finish: true
+
+    include:
+      - { python: "3.6", env: DJANGO=1.11 }
+      - { python: "3.6", env: DJANGO=2.0 }
+
+    exclude:
+      - { python: "2.7", env: DJANGO=2.0 }
 
 install:
-  # Virtualenv < 14 is required to keep the Python 3.2 builds running.
-  - pip install tox "virtualenv<14"
+    - pip install tox tox-travis
 
 script:
-    - tox -e $TOX_ENV
+    - tox
