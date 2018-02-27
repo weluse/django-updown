@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.1.0
+
+- Add support for Django 2.0 (thanks to [agusmakmun](https://github.com/agusmakmun))
+
 ## 1.0.2
 
 - Replaced IPAddressField in migration (thanks to [baster33](https://github.com/baster33))
